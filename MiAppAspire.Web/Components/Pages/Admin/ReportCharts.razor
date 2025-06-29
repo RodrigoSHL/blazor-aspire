@@ -26,7 +26,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const barData1 = {
+    var barData1 = {
         labels: ["A", "B", "C", "D"],
         datasets: [{
             label: "Datos 1",
@@ -36,7 +36,7 @@
             data: [12, 19, 3, 5]
         }]
     };
-    const barData2 = {
+    var barData2 = {
         labels: ["W", "X", "Y", "Z"],
         datasets: [{
             label: "Datos 2",
@@ -46,14 +46,14 @@
             data: [7, 11, 5, 8]
         }]
     };
-    const pieData1 = {
+    var pieData1 = {
         labels: ["Rojo", "Azul", "Amarillo"],
         datasets: [{
             data: [10, 20, 30],
             backgroundColor: ["#ff6384", "#36a2eb", "#ffcd56"]
         }]
     };
-    const pieData2 = {
+    var pieData2 = {
         labels: ["Verde", "Morado", "Naranja"],
         datasets: [{
             data: [15, 25, 20],
@@ -87,5 +87,5 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', buildCharts);
+    document.addEventListener('DOMContentLoaded', buildCharts, { once: true });
 </script>
