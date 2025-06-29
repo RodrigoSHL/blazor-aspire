@@ -1,0 +1,121 @@
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    private List<SampleEntity> items = new();
+    private int nextId = 1;
+
+    private int? editId;
+    private string? editName;
+
+    private bool adding;
+    private string? newName;
+
+    protected override void OnInitialized()
+    {
+        items.AddRange(new[]
+        {
+            new SampleEntity { Id = nextId++, Name = $"{Title} 1" },
+            new SampleEntity { Id = nextId++, Name = $"{Title} 2" }
+        });
+    }
+
+    private void BeginAdd()
+    {
+        adding = true;
+        newName = string.Empty;
+    }
+
+    private void CancelAdd() => adding = false;
+
+    private void SaveNew()
+    {
+        if (!string.IsNullOrWhiteSpace(newName))
+        {
+            items.Add(new SampleEntity { Id = nextId++, Name = newName! });
+        }
+        adding = false;
+    }
+
+    private void Edit(SampleEntity item)
+    {
+        editId = item.Id;
+        editName = item.Name;
+    }
+
+    private void CancelEdit()
+    {
+        editId = null;
+    }
+
+    private void SaveEdit(int id)
+    {
+        var item = items.First(x => x.Id == id);
+        if (!string.IsNullOrWhiteSpace(editName))
+        {
+            item.Name = editName!;
+        }
+        editId = null;
+    }
+
+    private void Delete(int id)
+    {
+        var item = items.First(x => x.Id == id);
+        items.Remove(item);
+    }
+}
+
+<h3>@Title</h3>
+
+<button class="btn btn-primary mb-2" @onclick="BeginAdd">Nuevo</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in items)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>
+                    @if (editId == item.Id)
+                    {
+                        <input class="form-control" @bind="editName" />
+                    }
+                    else
+                    {
+                        @item.Name
+                    }
+                </td>
+                <td>
+                    @if (editId == item.Id)
+                    {
+                        <button class="btn btn-sm btn-success" @onclick="() => SaveEdit(item.Id)">Guardar</button>
+                        <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancelar</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-primary" @onclick="() => Edit(item)">Editar</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => Delete(item.Id)">Eliminar</button>
+                    }
+                </td>
+            </tr>
+        }
+        @if (adding)
+        {
+            <tr>
+                <td>--</td>
+                <td><input class="form-control" @bind="newName" /></td>
+                <td>
+                    <button class="btn btn-sm btn-success" @onclick="SaveNew">Guardar</button>
+                    <button class="btn btn-sm btn-secondary" @onclick="CancelAdd">Cancelar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
