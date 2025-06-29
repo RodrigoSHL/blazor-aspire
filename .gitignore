@@ -1,0 +1,20 @@
+# Ignore build outputs
+bin/
+obj/
+**/bin/
+**/obj/
+# Visual Studio files
+.vs/
+*.user
+*.suo
+# NuGet packages
+*.nupkg
+packages/
+# Rider and ReSharper
+*.sln.ide
+.idea/
+_ReSharper*/
+# Logs
+*.log
+# Temporary files
+*.tmp
