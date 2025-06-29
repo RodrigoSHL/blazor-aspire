@@ -67,14 +67,14 @@
 
 <h3>@Title</h3>
 
-<button class="btn btn-primary mb-2" @onclick="BeginAdd">Nuevo</button>
+<button class="btn btn-primary mb-2" @onclick="BeginAdd">New</button>
 
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Acciones</th>
+            <th>Name</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -95,13 +95,13 @@
                 <td>
                     @if (editId == item.Id)
                     {
-                        <button class="btn btn-sm btn-success" @onclick="() => SaveEdit(item.Id)">Guardar</button>
-                        <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancelar</button>
+                        <button class="btn btn-sm btn-success" @onclick="() => SaveEdit(item.Id)">Save</button>
+                        <button class="btn btn-sm btn-secondary" @onclick="CancelEdit">Cancel</button>
                     }
                     else
                     {
-                        <button class="btn btn-sm btn-primary" @onclick="() => Edit(item)">Editar</button>
-                        <button class="btn btn-sm btn-danger" @onclick="() => Delete(item.Id)">Eliminar</button>
+                        <button class="btn btn-sm btn-primary" @onclick="() => Edit(item)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => Delete(item.Id)">Delete</button>
                     }
                 </td>
             </tr>
@@ -112,8 +112,8 @@
                 <td>--</td>
                 <td><input class="form-control" @bind="newName" /></td>
                 <td>
-                    <button class="btn btn-sm btn-success" @onclick="SaveNew">Guardar</button>
-                    <button class="btn btn-sm btn-secondary" @onclick="CancelAdd">Cancelar</button>
+                    <button class="btn btn-sm btn-success" @onclick="SaveNew">Save</button>
+                    <button class="btn btn-sm btn-secondary" @onclick="CancelAdd">Cancel</button>
                 </td>
             </tr>
         }
