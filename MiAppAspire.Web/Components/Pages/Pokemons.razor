@@ -1,0 +1,85 @@
+@page "/pokemons"
+
+@inject PokemonApiClient PokeApi
+
+<PageTitle>Pokémon</PageTitle>
+
+<h1>Pokémon</h1>
+
+@if (loading)
+{
+    <p><em>Cargando...</em></p>
+}
+else if (pokemonPage?.Pokemon?.Length == 0)
+{
+    <p>No se encontraron resultados.</p>
+}
+else if (pokemonPage != null)
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var p in pokemonPage.Pokemon)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <img src="@p.Sprites.FrontDefault" class="card-img-top" alt="@p.Name" />
+                    <div class="card-body">
+                        <h5 class="card-title text-capitalize">@p.Name</h5>
+                        <p class="card-text">
+                            @foreach (var t in p.Types)
+                            {
+                                <span class="badge bg-primary me-1 text-capitalize">@t.Type.Name</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <button class="btn btn-secondary" @onclick="PrevPage" disabled="@(!HasPrev)">Anterior</button>
+        <span>Página @PageIndex</span>
+        <button class="btn btn-secondary" @onclick="NextPage" disabled="@(!HasNext)">Siguiente</button>
+    </div>
+}
+
+@code {
+    private int PageIndex = 1;
+    private const int PageSize = 12;
+    private (PokemonDetail[] Pokemon, int TotalCount)? pokemonPage;
+    private bool loading;
+
+    private bool HasPrev => PageIndex > 1;
+    private bool HasNext => pokemonPage?.TotalCount > PageIndex * PageSize;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPage();
+    }
+
+    private async Task LoadPage()
+    {
+        loading = true;
+        StateHasChanged();
+        pokemonPage = await PokeApi.GetPokemonPageAsync((PageIndex - 1) * PageSize, PageSize);
+        loading = false;
+    }
+
+    private async Task PrevPage()
+    {
+        if (HasPrev)
+        {
+            PageIndex--;
+            await LoadPage();
+        }
+    }
+
+    private async Task NextPage()
+    {
+        if (HasNext)
+        {
+            PageIndex++;
+            await LoadPage();
+        }
+    }
+}
