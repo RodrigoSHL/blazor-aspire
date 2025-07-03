@@ -18,6 +18,11 @@ builder.Services.AddHttpClient<WeatherApiClient>(client =>
         client.BaseAddress = new("https+http://apiservice");
     });
 
+builder.Services.AddHttpClient<PokemonApiClient>(client =>
+    {
+        client.BaseAddress = new("https://pokeapi.co/api/v2/");
+    });
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
